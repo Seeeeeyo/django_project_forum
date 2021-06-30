@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block extend_title %}Topic |{% endblock %}
+
+{% block content %}
+<div class="topic">
+    <div class="inner-wrapper">
+        <!-- Inner sidebar -->
+        <div class="inner-sidebar">
+            <!-- Inner sidebar header -->
+            <div class="inner-sidebar-header justify-content-center">
+                <a class="btn btn-primary has-icon btn-block" type="button" href="{% url 'topic_create' %}">New topic</a>
+            </div>
+            <!-- /Inner sidebar header -->
+
+            <!-- Inner sidebar body -->
+            <div class="inner-sidebar-body p-0">
+                <div class="p-3 h-100" data-simplebar="init">
+                    <nav class="nav nav-pills nav-gap-y-1 flex-column">
+                        <a href="{% url 'topic_list' %}?filter=0&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter != '3' and request.GET.filter != '1' and request.GET.filter != '2' %} active {% endif %}">
+                            All Threads
+                        </a>
+                        <a href="{% url 'topic_list' %}?filter=1&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter == '1'%} active {% endif %}">Solved</a>
+                        <a href="{% url 'topic_list' %}?filter=2&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter == '2'%} active {% endif %}">Unsolved</a>
+                        <a href="{% url 'topic_list' %}?filter=3&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter == '3'%} active {% endif %}">
+                            No replies yet
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            <!-- /Inner sidebar body -->
+        </div>
+        <!-- /Inner sidebar -->
+
+        <!-- Inner main -->
+         <div class="inner-main">
+            <!-- Inner main header -->
+            <div class="inner-main-header">
+                <span class="input-icon input-icon-sm ml-auto w-auto">
+                    <form method="GET" action="{% url 'topic_list' %}">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <input name="search" type="text" class="form-control bg-gray-200 border-gray-200 shadow-none"
+                                    placeholder="Search forum" />
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary has-icon btn-block" value="Search" />
+                            </div>
+                        </div>
+                    </form>
+                </span>
+            </div>
+            <!-- /Inner main header -->
+
+            <!-- Inner main body -->
+
+            <!-- Forum Detail -->
+            <div class="inner-main-body p-2 p-sm-3 forum-content">
+                <a href="{% url 'topic_list' %}?filter={{request.GET.filter}}&search={{request.GET.search}}" class="btn btn-light btn-sm mb-3 has-icon">
+                    <i class="fa fa-arrow-left mr-2"></i> Back
+                </a>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media forum-item">
+                            <div class="card-link">
+                                <img src="{{ topic.author.get_avatar_url }}" class="rounded-circle"
+                                    width="50" alt="User" />
+                            </div>
+                            <div class="media-body ml-3">
+                                <span class="text-secondary">{{ topic.author }}</span>
+                                <small class="text-muted ml-2">{{ topic.date|timesince }} ago</small>
+                                <h5 class="mt-1">{{ topic.title }}</h5>
+                                <div class="mt-3 font-size-sm">
+                                    <p>
+                                        {{topic.text}}
+
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-muted small text-center">
+                                <span><i class="far fa-comment ml-2"></i> {{ topic.response_set.count }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                {% for response in topic.response_set.all %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <div class="media forum-item">
+                            <a href="{% if request.user == response.author %} {% url 'profile_update' response.author.pk %} {% else %} {% url 'profile_detail' response.author.pk %} {% endif %}" class="card-link">
+                                <img src="{{ response.author.get_avatar_url }}" class="rounded-circle"
+                                    width="50" alt="User" />
+                            </a>
+                            <div class="media-body ml-3">
+                                <span class="text-secondary">{{response.author}}</span>
+                                <small class="text-muted ml-2">{{ response.date|timesince }} ago</small>
+                                <div class="mt-3 font-size-sm">
+                                    <p>
+                                        {{ response.text }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <hr />
+
+                <form action="{% url 'response' topic.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mb-2">
+                        <label for="reply" class="">Your message</label>
+                        <textarea class="form-control" id="reply" style="height: 145px;" name="text"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Send</button>
+                </form>
+            </div>
+            <!-- /Forum Detail -->
+        </div>
+        <!-- /Inner main -->
+    </div>
+</div>
+{% endblock %}

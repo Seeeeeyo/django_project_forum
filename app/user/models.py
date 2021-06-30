@@ -40,6 +40,13 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+def upload_avatar2(object, filename):
+    return '{pk}/{file}'.format(pk=object.pk, file=filename)
+
+# "%s/%s" % (variable1, variable2)
+# "{}/{}".format(variable1, variable2)
+# "{variable1}/{variable2}".format(variable1=variable1, variable2=variable2)
+
 class User(AbstractUser):
     email = models.EmailField(
         verbose_name=_("Adresse Email"),
@@ -49,6 +56,11 @@ class User(AbstractUser):
     avatar = models.ImageField(
         verbose_name=_("Avatar"),
         upload_to='avatar',
+        blank=True, null=True,
+    )
+    avatar2 = models.ImageField(
+        verbose_name=_("Avatar"),
+        upload_to=upload_avatar2,
         blank=True, null=True,
     )
     first_name = models.CharField(
@@ -71,7 +83,7 @@ class User(AbstractUser):
         verbose_name_plural = _("Utilisateurs")
 
     def __str__(self):
-        return self.email
+        return self.get_fullname()
 
     def get_fullname(self):
         return "%s %s" % (self.first_name, self.last_name)

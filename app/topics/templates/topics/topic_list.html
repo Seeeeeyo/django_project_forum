@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block extend_title %}Topics |{% endblock %}
+
+{% block content %}
+<div class="topic">
+    <div class="inner-wrapper">
+        <!-- Inner sidebar -->
+        <div class="inner-sidebar">
+            <!-- Inner sidebar header -->
+            <div class="inner-sidebar-header justify-content-center">
+                <a class="btn btn-primary has-icon btn-block" type="button" href="{% url 'topic_create' %}">New topic</a>
+            </div>
+            <!-- /Inner sidebar header -->
+
+            <!-- Inner sidebar body -->
+            <div class="inner-sidebar-body p-0">
+                <div class="p-3 h-100" data-simplebar="init">
+                    <nav class="nav nav-pills nav-gap-y-1 flex-column">
+                        <a href="{% url 'topic_list' %}?filter=0&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter != '3' and request.GET.filter != '1' and request.GET.filter != '2' %} active {% endif %}">
+                            All Threads
+                        </a>
+                        <a href="{% url 'topic_list' %}?filter=1&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter == '1'%} active {% endif %}">Solved</a>
+                        <a href="{% url 'topic_list' %}?filter=2&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter == '2'%} active {% endif %}">Unsolved</a>
+                        <a href="{% url 'topic_list' %}?filter=3&search={{request.GET.search}}" class="nav-link nav-link-faded has-icon {% if request.GET.filter == '3'%} active {% endif %}">
+                            No replies yet
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            <!-- /Inner sidebar body -->
+        </div>
+        <!-- /Inner sidebar -->
+
+        <!-- Inner main -->
+        <div class="inner-main">
+            <!-- Inner main header -->
+            <div class="inner-main-header">
+                <span class="input-icon input-icon-sm ml-auto w-auto">
+                    <form method="GET" action="{% url 'topic_list' %}">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <input name="search" type="text" class="form-control bg-gray-200 border-gray-200 shadow-none"
+                                    placeholder="Search forum" />
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary has-icon btn-block" value="Search" />
+                            </div>
+                        </div>
+                    </form>
+                </span>
+            </div>
+            <!-- /Inner main header -->
+
+            <!-- Inner main body -->
+
+            <!-- Forum List -->
+            <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+                {% for topic in object_list %}
+                <div class="card mb-2">
+                    <div class="card-body p-2 p-sm-3">
+                        <div class="media forum-item">
+                            <img src= "{{ topic.author.get_avatar_url }}" class="mr-3 rounded-circle"
+                                width="50" alt="User" />
+                            <div class="media-body">
+                                <h6 class="text-body"><a class="text-dark" href="{% url 'topic_detail' topic.pk %}?filter={{request.GET.filter}}&search={{request.GET.search}}"> {{ topic.title }} </a></h6>
+                                <p class="text-secondary">
+                                    {{ topic.text }}
+                                    {# topic.response_set #}
+                                </p>
+                                <p class="text-muted">
+                                    <span class="text-secondary font-weight-bold"> {{ topic.author }}</span>
+                                    replied
+                                    <span class="text-secondary font-weight-bold"> {{ topic.date|timesince }} ago</span>
+                                </p>
+                            </div>
+                            <div class="text-muted small text-center align-self-center">
+                                <span><i class="far fa-comment ml-2"></i> {{ topic.number_replies|default:0}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% for i in '' %}
+                <div>
+                    {{ forloop.counter0 }}
+                </div>
+
+                <!-- Pagination -->
+                <ul class="pagination pagination-sm pagination-circle justify-content-center my-4">
+                     {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link has-icon" href="{% url 'topic_list' %}?page={{ page_obj.previous_page_number }}&{{request.GET.urlencode}}">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    {% else %}
+                         <li class="page-item disabled">
+                            <span class="page-link has-icon"><i class="fas fa-chevron-left"></i></span>
+                        </li>
+                    {% endif %}
+                    {% for i in page_obj.paginator.page_range %}
+                        {% if i ==  page_obj.number %}
+                            <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{% url 'topic_list' %}?page={{ i }}&search={{request.GET.search}}&filter={{request.GET.filter}}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link has-icon" href="{% url 'topic_list' %}?page={{ page_obj.next_page_number }}&{{request.GET.urlencode}}">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                    {% else %}
+                         <li class="page-item disabled">
+                            <span class="page-link has-icon"><i class="fas fa-chevron-right"></i></span>
+                        </li>
+                    {% endif %}
+                </ul>
+                <!-- /Pagination -->
+            </div>
+            <!-- /Forum List -->
+        </div>
+        <!-- /Inner main -->
+    </div>
+</div>
+{% endblock %}

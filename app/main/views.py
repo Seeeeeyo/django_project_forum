@@ -22,7 +22,7 @@ class ResetPwdCompleteTemplateView(TemplateView):
     template_name = 'main/reset_pwd_complete.html'
 
 class ProfilTemplateView(TemplateView):
-    template_name = 'main/profil.html'
+    template_name = 'main/profil_detail.html'
 
 class TopicListTemplateView(TemplateView):
     template_name = 'main/topic_list.html'

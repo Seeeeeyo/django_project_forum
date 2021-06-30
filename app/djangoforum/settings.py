@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Internal apps
     'user',
     'main',
+    'topics'
 ]
 
 MIDDLEWARE = [
@@ -185,3 +186,5 @@ WEBPACK_LOADER = {
         'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
     }
 }
+
+LOGIN_REDIRECT_URL = 'topic_list'
