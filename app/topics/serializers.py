@@ -16,8 +16,6 @@ class TopicListSerializer(serializers.ModelSerializer):
     last_message = TopicLastMessageSerializer(source='*')
 
     count_replies = serializers.CharField(source='get_replies_count')
-    last_message_author = serializers.CharField(source='get_last_message_author')
-    last_message_date = serializers.CharField(source='get_last_message_date')
 
     class Meta:
         model = Topic

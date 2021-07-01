@@ -10,10 +10,12 @@ class Topic(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def get_last_message_author(self):
-        return self.response_set.all().last().get_author()
+        if self.response_set.all().last() is not None:
+            return self.response_set.all().last().get_author()
 
     def get_last_message_date(self):
-        return self.response_set.all().last().get_date()
+        if self.response_set.all().last() is not None:
+            return self.response_set.all().last().get_date()
 
     def get_replies_count(self):
         return self.response_set.count()
