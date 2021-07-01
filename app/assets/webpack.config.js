@@ -11,7 +11,7 @@ var config = {
   // Path to your entry point. From this file Webpack will begin his work
   entry: {
     main: './src/js/main.js',
-    helloworld: './src/apps/helloworld/index.js',
+    topic: './src/apps/topic/index.js',
   },
 
   // Path and filename of your result bundle.

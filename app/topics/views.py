@@ -66,3 +66,6 @@ class TopicCreateTemplateView(CreateView):
         self.object.save()
         # print(request.user.is_authenticated)
         return HttpResponseRedirect(reverse('topic_detail', args=(self.object.id,)))
+
+class ReactTemplateView(TemplateView):
+    template_name = 'topics/react.html'

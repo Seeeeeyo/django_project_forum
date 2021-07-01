@@ -27,6 +27,7 @@
     },
     "author": "Dubois Romain",
     "dependencies": {
+        "moment": "^2.29.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1"
     }

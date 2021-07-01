@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block extend_title %}React |{% endblock %}
+
+{% block content %}
+<div class="topic">
+  <div id="react"></div>
+</div>
+{% endblock %}
+
+{% block extend_javascript %}
+  {{ block.super }}
+  {% render_bundle 'topic' %}
+{% endblock %}

@@ -15,7 +15,7 @@ config.devServer = {
    }
 };
 
-config.output.publicPath = 'http://0.0.0.0:8080/static/bundles/';
+config.output.publicPath = 'http://localhost:8080/static/bundles/';
 config.plugins.push(new webpack.DefinePlugin({
     'process.env':{
         'NODE_ENV': JSON.stringify('development')
