@@ -43,11 +43,13 @@ INSTALLED_APPS = [
 
     # External apps
     'webpack_loader',
+    'rest_framework',
 
     # Internal apps
     'user',
     'main',
     'topics'
+    # 'topics.apps.TopicsConfig',
 ]
 
 MIDDLEWARE = [
@@ -188,3 +190,8 @@ WEBPACK_LOADER = {
 }
 
 LOGIN_REDIRECT_URL = 'topic_list'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3
+}
