@@ -10,11 +10,14 @@ class TopicLastMessageSerializer(serializers.ModelSerializer):
         model = Topic
         fields = ['author', 'date']
 
-class TopicDetailSerializer(serializers.ModelSerializer):
+class TopicListSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
+
     last_message = TopicLastMessageSerializer(source='*')
 
     count_replies = serializers.CharField(source='get_replies_count')
+    last_message_author = serializers.CharField(source='get_last_message_author')
+    last_message_date = serializers.CharField(source='get_last_message_date')
 
     class Meta:
         model = Topic
@@ -36,13 +39,10 @@ class TopicDetailSerializer(serializers.ModelSerializer):
         instance.title = validated_data.get('title', instance.title)
         instance.date = validated_data.get('date', instance.date)
         instance.text = validated_data.get('text', instance.text)
+        instance.count_replies = validated_data.get('count_replies', instance.count_replies)
         instance.solved = validated_data.get('solved', instance.solved)
         instance.author = validated_data.get('author', instance.author)
-        instance.author_avatar = validated_data.get('author_avatar', instance.author_avatar)
-        instance.number_replies = validated_data.get('number_replies', instance.number_replies)
+        instance.last_message_author = validated_data.get('last_message_author', instance.last_message_author)
+        instance.last_message_date = validated_data.get('number_replies', instance.last_message_date)
         instance.save()
         return instance
-
-# nombre de topics en tout
-# url du prochain topic et du precedent topic
-# liste de resultats: id, titre, description, nombre, solved, when, creator serializer, qui est le dernier a repondre (author) et quand
