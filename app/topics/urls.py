@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 
 import topics.api_views
+import topics.views
 
 urlpatterns = [
     path('', topics.views.TopicListTemplateView.as_view(), name='topic_list'),

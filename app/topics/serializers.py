@@ -2,25 +2,24 @@ from rest_framework import serializers
 from .models import Topic
 from user.serializers import AuthorSerializer
 
-
 class TopicLastMessageSerializer(serializers.ModelSerializer):
-    last_message_author = serializers.CharField(source='get_last_message_author')
-    last_message_date = serializers.CharField(source='get_last_message_date')
+    author = serializers.CharField(source='get_last_message_author')
+    date = serializers.CharField(source='get_last_message_date')
 
     class Meta:
         model = Topic
-        fields = ['last_message_author', 'last_message_date']
-
+        fields = ['author', 'date']
 
 class TopicDetailSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
-    last_message = TopicLastMessageSerializer(read_only=True)
+    last_message = TopicLastMessageSerializer(source='*')
 
     count_replies = serializers.CharField(source='get_replies_count')
 
     class Meta:
         model = Topic
         fields = ['id', 'title', 'date', 'text', 'solved', 'count_replies', 'author', 'last_message']
+        depth = 1
 
 
     def create(self, validated_data):
