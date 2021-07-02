@@ -13,10 +13,10 @@ class TopicList(generics.ListCreateAPIView):
         object_list = Topic.objects.annotate(number_replies=Max('response'))
         if search is not None:
             object_list = object_list.filter(title__icontains=search)
-        if cat == '1':
+        if cat == 'solved':
             object_list = object_list.filter(solved=True)
-        if cat == '2':
+        if cat == 'unsolved':
             object_list = object_list.filter(solved=False)
-        if cat == '3':
+        if cat == 'noreply':
             object_list = object_list.filter(number_replies=None)
         return object_list
