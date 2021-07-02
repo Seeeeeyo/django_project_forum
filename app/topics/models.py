@@ -26,7 +26,7 @@ class Topic(models.Model):
 
 
 class Response(models.Model):
-    date = models.DateTimeField("date published")  # verbose used to debug
+    date = models.DateTimeField("date published", default=timezone.now())  # verbose used to debug
     text = models.TextField()
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
@@ -36,6 +36,9 @@ class Response(models.Model):
 
     def get_date(self):
         return self.date
+
+    def get_avatar(self):
+        return self.author.get_avatar_url()
 
     def __str__(self):
         return self.text
