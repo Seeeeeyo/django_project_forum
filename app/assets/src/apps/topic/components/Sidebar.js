@@ -7,11 +7,11 @@ const filters = {
     'noreply': 'No replies yet'
 }
 
-function Sidebar({ filter, updateFilter }) {
+function Sidebar({ filter, updateFilter, updatePage }) {
     return (
         <div className="inner-sidebar">
             <div className="inner-sidebar-header justify-content-center">
-                <a className="btn btn-primary has-icon btn-block" type="button" href="{% url 'topic_create' %}">New topic</a>
+                <a className="btn btn-primary has-icon btn-block" type="button" onClick={() => {updatePage('create')}}>New topic</a>
             </div>
 
             <div className="inner-sidebar-body p-0">

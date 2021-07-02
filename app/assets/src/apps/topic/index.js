@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import TopicList from './components/TopicList';
+import TopicList from './components/TopicIndex';
 
 ReactDOM.render(
   <React.StrictMode>
