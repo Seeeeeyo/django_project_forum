@@ -1,10 +1,11 @@
 from django.db import models
 from user.models import User
+from django.utils import timezone
 
 
 class Topic(models.Model):
     title = models.CharField(max_length=200)
-    date = models.DateTimeField("date published")  # verbose used to debug
+    date = models.DateTimeField("date published", default=timezone.now())  # verbose used to debug
     text = models.TextField()
     solved = models.BooleanField(default=False)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
